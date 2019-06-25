@@ -1,1 +1,1 @@
-# mainichi-no-koucha
+# GoTo EventBot
