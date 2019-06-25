@@ -1,14 +1,18 @@
-import telebot
-import answers
-import tokens
+from telegram.ext import CommandHandler, Updater
 
-bot = telebot.TeleBot(tokens.telebot)
+import answer
+import secret
 
-@bot.message_handler(content_types = ["text"])
-def on_text(message):
-    if message.text == "/help":
-        bot.send_message(message.from_user.id, answers.help)
-    else:
-        bot.send_message(message.from_user.id, answers.fail)
+request_kwargs = { "proxy_url": "socks5://t.geekclass.ru:7777", "urllib3_proxy_kwargs": { "username": "geek", "password": "socks" } }
 
-bot.polling(none_stop = True, interval = 0)
+updater = Updater(token = secret.token, request_kwargs = request_kwargs)
+dispatcher = updater.dispatcher
+
+def start(bot, update):
+    bot.send_message(chat_id = update.message.chat_id, text = answer.start)
+
+handler_start = CommandHandler("start", start)
+
+dispatcher.add_handler(handler_start)
+
+updater.start_polling()
