@@ -1,18 +1,32 @@
 from telegram.ext import CommandHandler, Updater
 
+import logging
+
 import answer
 import secret
 
-request_kwargs = { "proxy_url": "socks5://t.geekclass.ru:7777", "urllib3_proxy_kwargs": { "username": "geek", "password": "socks" } }
+from keyboard import keyboard
 
-updater = Updater(token = secret.token, request_kwargs = request_kwargs)
-dispatcher = updater.dispatcher
+logging.basicConfig(format = "%(message)s", level = logging.INFO)
 
-def start(bot, update):
-    bot.send_message(chat_id = update.message.chat_id, text = answer.start)
+class Bot:
+    def __init__(self, token, request_kwargs):
+        updater    = Updater(token = token, request_kwargs = request_kwargs)
+        dispatcher = updater.dispatcher
 
-handler_start = CommandHandler("start", start)
+        handler_start = CommandHandler("start", self.start)
 
-dispatcher.add_handler(handler_start)
+        dispatcher.add_handler(handler_start)
 
-updater.start_polling()
+        updater.start_polling()
+
+    def start(self, bot, update):
+        bot.send_message(chat_id = update.message.chat_id, text = answer.start)
+
+if __name__ == "__main__":
+    request_kwargs = {
+            "proxy_url": "socks5://t.geekclass.ru:7777",
+            "urllib3_proxy_kwargs": { "username": "geek", "password": "socks" }
+        }
+
+    Bot(secret.token, request_kwargs)
