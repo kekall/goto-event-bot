@@ -1,3 +1,4 @@
-start = "TODO: start"
-help  = "TODO: help"
-fail  = "TODO: fail"
+start   = "TODO: start"
+help    = "TODO: help"
+unknown = "TODO: unknown"
+playing = "TODO: playing"
